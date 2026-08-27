@@ -11,6 +11,10 @@ export function formatPrice(tomans: number, isFa: boolean = true): string {
   return `${formatted} Tomans`;
 }
 
+export function formatPriceTomans(tomans: number, language: 'fa' | 'en' = 'fa'): string {
+  return formatPrice(tomans, language === 'fa');
+}
+
 export function formatRials(tomans: number, isFa: boolean = true): string {
   const rials = tomans * 10;
   const formatted = new Intl.NumberFormat('en-US').format(rials);

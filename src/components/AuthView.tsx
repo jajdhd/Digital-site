@@ -129,14 +129,14 @@ export const AuthView: React.FC = () => {
             </h2>
             <p className="text-emerald-100 text-xs leading-relaxed mb-6">
               {language === 'fa' 
-                ? 'با ورود یا ثبت نام در رستم شاپ، از ۵۰۰ هزار تومان اعتبار هدیه کیف پول، خرید اقساطی بدون چک و پیگیری لحظه‌ای سفارشات بهره‌مند شوید.'
-                : 'Join Rostam Shop to get a 500K Tomans welcome bonus, exclusive installment plans, and real-time order tracking.'}
+                ? 'با ورود یا ثبت نام در رستم شاپ، از ۱,۰۰۰,۰۰۰ تومان اعتبار هدیه کیف پول، خرید اقساطی بدون چک و پیگیری لحظه‌ای سفارشات بهره‌مند شوید.'
+                : 'Join Rostam Shop to get a 1,000,000 Tomans welcome bonus, exclusive installment plans, and real-time order tracking.'}
             </p>
 
             <div className="space-y-3.5 text-xs text-emerald-50">
               <div className="flex items-center gap-3 bg-white/10 p-2.5 rounded-xl backdrop-blur-sm">
                 <Gift className="w-4 h-4 text-orange-300 shrink-0" />
-                <span>۵۰۰ هزار تومان اعتبار رایگان کیف پول</span>
+                <span className="font-bold">۱,۰۰۰,۰۰۰ تومان اعتبار هدیه کیف پول</span>
               </div>
               <div className="flex items-center gap-3 bg-white/10 p-2.5 rounded-xl backdrop-blur-sm">
                 <ShieldCheck className="w-4 h-4 text-emerald-300 shrink-0" />

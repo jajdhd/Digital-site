@@ -16,6 +16,7 @@ import { PaymentPageView } from './components/PaymentPageView';
 import { AuthView } from './components/AuthView';
 import { UserProfileView } from './components/UserProfileView';
 import { CompareModal } from './components/CompareModal';
+import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
 import { 
   CheckCircle2, 
@@ -101,6 +102,9 @@ const ShopAppContent: React.FC = () => {
 
       {/* Compare Modal */}
       <CompareModal />
+
+      {/* Auth Modal (Sign In / Sign Up) */}
+      <AuthModal />
 
       {/* Cart Drawer */}
       <CartDrawer />

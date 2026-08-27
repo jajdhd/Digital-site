@@ -16,10 +16,12 @@ import {
   User,
   Heart,
   Layers,
-  Flame
+  LogIn,
+  UserPlus,
+  Wallet
 } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
-import { toPersianDigits } from '../utils/formatters';
+import { toPersianDigits, formatPriceTomans } from '../utils/formatters';
 
 export const Header: React.FC = () => {
   const { 
@@ -35,7 +37,8 @@ export const Header: React.FC = () => {
     currentUser,
     wishlist,
     comparisonList,
-    setIsComparisonModalOpen
+    setIsComparisonModalOpen,
+    openAuthModal
   } = useShop();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -47,18 +50,20 @@ export const Header: React.FC = () => {
       <div className="bg-emerald-50/70 border-b border-emerald-100/80 py-1.5 px-4 text-[11px] text-emerald-900">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1 text-emerald-800 font-bold">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              {language === 'fa' ? 'فروشگاه اینترنتی رستم شاپ • درگاه پرداخت مستقیم شاپرک و زرین‌پال v4' : 'Rostam Shop • Official Zarinpal & Shaparak Payment Gateway'}
+            <span className="flex items-center gap-1.5 text-emerald-800 font-extrabold">
+              <span className="w-5 h-5 rounded-md bg-emerald-600 text-white inline-flex items-center justify-center shrink-0 shadow-xs">
+                <ShieldCheck className="w-3.5 h-3.5" />
+              </span>
+              {language === 'fa' ? 'فروشگاه اینترنتی رستم شاپ • پرداخت شاپرک و زرین‌پال v4' : 'Rostam Shop • Official Zarinpal & Shaparak Payment Gateway'}
             </span>
-            <span className="hidden sm:inline-flex items-center gap-1 text-slate-600 font-medium">
-              <Zap className="w-3 h-3 text-orange-500" />
-              {language === 'fa' ? 'ارسال اکسپرس رایگان برای خریدهای بالای ۱۰ میلیون تومان' : 'Free Express Shipping Over 10M Tomans'}
+            <span className="hidden sm:inline-flex items-center gap-1 text-slate-600 font-bold">
+              <Zap className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+              {language === 'fa' ? 'ارسال رایگان سفارشات بالای ۱۰ میلیون تومان' : 'Free Express Shipping Over 10M Tomans'}
             </span>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="hidden md:flex items-center gap-1 font-mono text-[10px] text-slate-500 font-semibold">
+            <span className="hidden md:flex items-center gap-1.5 font-mono text-[10px] text-slate-600 font-bold bg-white px-2 py-0.5 rounded-md border border-slate-200 shadow-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               {gatewayConfig.isSandbox ? 'درگاه تستی شاپرک (Sandbox)' : 'شاپرک عملیاتی'}
             </span>
@@ -66,9 +71,9 @@ export const Header: React.FC = () => {
             {/* Language switch */}
             <button
               onClick={() => setLanguage(language === 'fa' ? 'en' : 'fa')}
-              className="flex items-center gap-1 text-slate-700 hover:text-emerald-700 transition-colors cursor-pointer text-[11px] bg-white px-2 py-0.5 rounded-md border border-slate-200 shadow-xs font-semibold"
+              className="flex items-center gap-1 text-slate-700 hover:text-emerald-700 transition-colors cursor-pointer text-[11px] bg-white px-2.5 py-0.5 rounded-md border border-slate-200 shadow-xs font-bold"
             >
-              <Globe className="w-3 h-3 text-emerald-600" />
+              <Globe className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
               <span>{language === 'fa' ? 'English' : 'فارسی'}</span>
             </button>
           </div>
@@ -76,7 +81,7 @@ export const Header: React.FC = () => {
       </div>
 
       {/* Main Navigation Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-18 flex items-center justify-between gap-3 sm:gap-4">
         
         {/* Logo */}
         <div className="flex items-center gap-3">
@@ -84,7 +89,7 @@ export const Header: React.FC = () => {
             onClick={() => setActiveView('shop')}
             className="flex items-center gap-2.5 text-left group cursor-pointer"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-orange-500 p-0.5 shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-orange-500 p-0.5 shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform shrink-0">
               <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5 text-emerald-600" />
               </div>
@@ -93,7 +98,7 @@ export const Header: React.FC = () => {
               <span className="font-black text-xl tracking-tight text-slate-900 flex items-center gap-1">
                 رستم <span className="text-orange-500">شاپ</span>
               </span>
-              <span className="text-[10px] text-slate-500 block -mt-1 font-semibold">
+              <span className="text-[10px] text-slate-500 block -mt-1 font-bold">
                 {language === 'fa' ? 'فروشگاه تخصصی کالا و درگاه پرداخت' : 'Rostam Digital Shop & Gateway'}
               </span>
             </div>
@@ -101,7 +106,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="hidden lg:flex flex-1 max-w-md mx-4 relative">
+        <div className="hidden lg:flex flex-1 max-w-md mx-2 relative">
           <div className="relative w-full">
             <Search className="w-4 h-4 text-slate-400 absolute right-3.5 top-1/2 -translate-y-1/2" />
             <input
@@ -109,7 +114,7 @@ export const Header: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={language === 'fa' ? 'جستجوی لپ‌تاپ، گوشی، هدفون، ساعت هوشمند در رستم شاپ...' : 'Search laptops, smartphones, headphones...'}
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl pr-10 pl-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-xs"
+              className="w-full bg-slate-50 border border-slate-200 rounded-2xl pr-10 pl-4 py-2.5 text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-xs font-medium"
             />
             {searchQuery && (
               <button 
@@ -123,7 +128,7 @@ export const Header: React.FC = () => {
         </div>
 
         {/* Desktop Nav Links */}
-        <nav className="hidden md:flex items-center gap-1 text-xs font-bold text-slate-700">
+        <nav className="hidden md:flex items-center gap-1.5 text-xs font-bold text-slate-700">
           <button
             onClick={() => setActiveView('shop')}
             className={`px-3 py-2 rounded-xl transition-all cursor-pointer ${
@@ -144,17 +149,17 @@ export const Header: React.FC = () => {
                 : 'hover:text-orange-600 hover:bg-orange-50/50'
             }`}
           >
-            <CreditCard className="w-3.5 h-3.5 text-orange-500" />
+            <CreditCard className="w-3.5 h-3.5 text-orange-500 shrink-0" />
             <span>{language === 'fa' ? 'صفحه پرداخت و فاکتور' : 'Online Pay'}</span>
           </button>
 
           {/* Compare Button */}
           <button
             onClick={() => setIsComparisonModalOpen(true)}
-            className="px-3 py-2 rounded-xl text-slate-700 hover:text-emerald-700 hover:bg-slate-50 transition flex items-center gap-1.5 relative"
+            className="px-3 py-2 rounded-xl text-slate-700 hover:text-emerald-700 hover:bg-slate-50 transition flex items-center gap-1.5 relative cursor-pointer"
             title="مقایسه کالاها"
           >
-            <Layers className="w-3.5 h-3.5 text-emerald-600" />
+            <Layers className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
             <span>{language === 'fa' ? 'مقایسه' : 'Compare'}</span>
             {comparisonList.length > 0 && (
               <span className="bg-emerald-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">
@@ -171,7 +176,7 @@ export const Header: React.FC = () => {
                 : 'hover:text-emerald-700 hover:bg-slate-50'
             }`}
           >
-            <Package className="w-3.5 h-3.5 text-emerald-600" />
+            <Package className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
             <span>{language === 'fa' ? 'پیگیری سفارشات' : 'My Orders'}</span>
           </button>
 
@@ -183,14 +188,14 @@ export const Header: React.FC = () => {
                 : 'hover:text-emerald-700 hover:bg-slate-50'
             }`}
           >
-            <Code2 className="w-3.5 h-3.5 text-slate-500" />
+            <Code2 className="w-3.5 h-3.5 text-slate-500 shrink-0" />
             <span>{language === 'fa' ? 'مستندات API' : 'API Docs'}</span>
           </button>
 
           <button
             onClick={() => setActiveView('gateway-settings')}
-            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition"
-            title="تنظیمات درگاه"
+            className="p-2 rounded-xl text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition cursor-pointer"
+            title="تنظیمات درگاه شاپرک"
           >
             <Settings2 className="w-4 h-4" />
           </button>
@@ -198,13 +203,11 @@ export const Header: React.FC = () => {
 
         {/* Right Actions: User Auth, Wishlist & Cart Drawer */}
         <div className="flex items-center gap-2">
+          
           {/* Wishlist Quick Counter */}
           <button
-            onClick={() => {
-              // Scroll to product grid or open wishlist info
-              setActiveView('shop');
-            }}
-            className="hidden sm:flex items-center justify-center p-2.5 rounded-2xl bg-white border border-slate-200 hover:border-rose-300 text-slate-600 hover:text-rose-500 transition relative"
+            onClick={() => setActiveView('shop')}
+            className="hidden sm:flex items-center justify-center p-2.5 rounded-2xl bg-white border border-slate-200 hover:border-rose-300 text-slate-600 hover:text-rose-500 transition relative cursor-pointer"
             title="لیست علاقه‌مندی‌ها"
           >
             <Heart className={`w-4 h-4 ${wishlist.length > 0 ? 'fill-rose-500 text-rose-500' : ''}`} />
@@ -215,29 +218,48 @@ export const Header: React.FC = () => {
             )}
           </button>
 
-          {/* User Button */}
+          {/* USER AUTH SECTION */}
           {currentUser ? (
             <button
               onClick={() => setActiveView('user-profile')}
-              className={`flex items-center gap-2 px-3 py-2 rounded-2xl border text-xs font-bold transition shadow-xs ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-2xl border text-xs font-bold transition shadow-xs cursor-pointer ${
                 activeView === 'user-profile'
                   ? 'bg-emerald-50 border-emerald-300 text-emerald-800'
                   : 'bg-white border-slate-200 text-slate-700 hover:border-emerald-300 hover:bg-emerald-50/50'
               }`}
             >
-              <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black">
+              <div className="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center text-xs font-black shrink-0">
                 {currentUser.fullName.charAt(0)}
               </div>
-              <span className="hidden sm:inline font-semibold">{currentUser.fullName.split(' ')[0]}</span>
+              <div className="hidden sm:flex flex-col items-start leading-tight">
+                <span className="font-extrabold text-slate-900">{currentUser.fullName.split(' ')[0]}</span>
+                <span className="text-[10px] text-emerald-700 font-mono">
+                  {formatPriceTomans(currentUser.walletBalanceTomans, language)}
+                </span>
+              </div>
             </button>
           ) : (
-            <button
-              onClick={() => setActiveView('auth')}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-2xl bg-white border border-slate-200 hover:border-orange-300 hover:bg-orange-50 text-slate-700 hover:text-orange-600 text-xs font-bold transition shadow-xs"
-            >
-              <User className="w-4 h-4 text-orange-500" />
-              <span>{language === 'fa' ? 'ورود / ثبت‌نام' : 'Login / Register'}</span>
-            </button>
+            <div className="flex items-center bg-slate-100/90 p-1 rounded-2xl border border-slate-200">
+              {/* Sign In Button */}
+              <button
+                onClick={() => openAuthModal('signin')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-emerald-50 text-slate-800 hover:text-emerald-700 text-xs font-extrabold transition shadow-2xs cursor-pointer"
+              >
+                <LogIn className="w-3.5 h-3.5 text-emerald-600" />
+                <span>{language === 'fa' ? 'ورود' : 'Sign In'}</span>
+              </button>
+
+              {/* Sign Up Button with Bonus badge */}
+              <button
+                onClick={() => openAuthModal('signup')}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-extrabold transition shadow-xs cursor-pointer ml-1"
+                title="ثبت‌نام و دریافت ۱ میلیون تومان هدیه"
+              >
+                <UserPlus className="w-3.5 h-3.5 text-white" />
+                <span className="hidden lg:inline">{language === 'fa' ? 'ثبت‌نام (هدیه)' : 'Sign Up'}</span>
+                <span className="lg:hidden">{language === 'fa' ? 'ثبت‌نام' : 'Sign Up'}</span>
+              </button>
+            </div>
           )}
 
           {/* Cart Button */}
@@ -245,7 +267,7 @@ export const Header: React.FC = () => {
             onClick={() => setIsCartDrawerOpen(true)}
             className="relative bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 sm:px-4 py-2.5 rounded-2xl transition shadow-md shadow-emerald-600/20 flex items-center gap-2 cursor-pointer group"
           >
-            <ShoppingBag className="w-4 h-4 text-emerald-100 group-hover:scale-110 transition-transform" />
+            <ShoppingBag className="w-4 h-4 text-emerald-100 group-hover:scale-110 transition-transform shrink-0" />
             <span className="text-xs font-extrabold hidden sm:inline">
               {language === 'fa' ? 'سبد خرید' : 'Cart'}
             </span>
@@ -259,7 +281,7 @@ export const Header: React.FC = () => {
           {/* Mobile menu toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-2xl bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200"
+            className="md:hidden p-2 rounded-2xl bg-slate-100 text-slate-700 hover:text-slate-900 border border-slate-200 cursor-pointer"
           >
             {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -277,53 +299,89 @@ export const Header: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={language === 'fa' ? 'جستجوی کالا در رستم شاپ...' : 'Search products...'}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl pr-9 pl-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl pr-9 pl-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none font-medium"
             />
           </div>
+
+          {/* Mobile Auth Bar if logged out */}
+          {!currentUser && (
+            <div className="grid grid-cols-2 gap-2 pb-2">
+              <button
+                onClick={() => { openAuthModal('signin'); setIsMobileMenuOpen(false); }}
+                className="py-2.5 px-3 rounded-xl bg-slate-100 border border-slate-200 text-slate-800 text-xs font-extrabold flex items-center justify-center gap-2"
+              >
+                <LogIn className="w-4 h-4 text-emerald-600" />
+                <span>ورود به حساب</span>
+              </button>
+              <button
+                onClick={() => { openAuthModal('signup'); setIsMobileMenuOpen(false); }}
+                className="py-2.5 px-3 rounded-xl bg-orange-500 text-white text-xs font-extrabold flex items-center justify-center gap-2 shadow-xs"
+              >
+                <UserPlus className="w-4 h-4 text-white" />
+                <span>ثبت نام (۱ میلیون هدیه)</span>
+              </button>
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-2 text-xs font-bold">
             <button
               onClick={() => { setActiveView('shop'); setIsMobileMenuOpen(false); }}
-              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right"
+              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right flex items-center gap-2"
             >
-              {language === 'fa' ? 'محصولات فروشگاه' : 'Store Products'}
+              <ShoppingBag className="w-4 h-4 text-emerald-600" />
+              <span>{language === 'fa' ? 'محصولات فروشگاه' : 'Store Products'}</span>
             </button>
             <button
               onClick={() => { setActiveView('payment-page'); setIsMobileMenuOpen(false); }}
-              className="p-2.5 rounded-xl bg-orange-50 border border-orange-200 text-orange-700 text-right"
+              className="p-2.5 rounded-xl bg-orange-50 border border-orange-200 text-orange-700 text-right flex items-center gap-2"
             >
-              {language === 'fa' ? 'صفحه پرداخت و فاکتور' : 'Online Pay'}
+              <CreditCard className="w-4 h-4 text-orange-500" />
+              <span>{language === 'fa' ? 'صفحه پرداخت فاکتور' : 'Online Pay'}</span>
             </button>
             <button
               onClick={() => { setIsComparisonModalOpen(true); setIsMobileMenuOpen(false); }}
               className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 text-right flex items-center justify-between"
             >
-              <span>{language === 'fa' ? 'مقایسه محصولات' : 'Compare'}</span>
+              <span className="flex items-center gap-2">
+                <Layers className="w-4 h-4 text-emerald-600" />
+                <span>{language === 'fa' ? 'مقایسه محصولات' : 'Compare'}</span>
+              </span>
               <span className="text-emerald-600 font-bold">{toPersianDigits(comparisonList.length)}</span>
             </button>
             <button
-              onClick={() => { setActiveView(currentUser ? 'user-profile' : 'auth'); setIsMobileMenuOpen(false); }}
-              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right"
+              onClick={() => { 
+                if (currentUser) {
+                  setActiveView('user-profile');
+                } else {
+                  openAuthModal('signin');
+                }
+                setIsMobileMenuOpen(false); 
+              }}
+              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right flex items-center gap-2"
             >
-              {currentUser ? (language === 'fa' ? 'پروفایل کاربری' : 'Profile') : (language === 'fa' ? 'ورود / ثبت‌نام' : 'Sign In')}
+              <User className="w-4 h-4 text-emerald-600" />
+              <span>{currentUser ? (language === 'fa' ? 'پروفایل کاربری' : 'Profile') : (language === 'fa' ? 'ورود / ثبت‌نام' : 'Sign In')}</span>
             </button>
             <button
               onClick={() => { setActiveView('order-history'); setIsMobileMenuOpen(false); }}
-              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right"
+              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right flex items-center gap-2"
             >
-              {language === 'fa' ? 'پیگیری سفارشات' : 'My Orders'}
+              <Package className="w-4 h-4 text-emerald-600" />
+              <span>{language === 'fa' ? 'پیگیری سفارشات' : 'My Orders'}</span>
             </button>
             <button
               onClick={() => { setActiveView('dev-docs'); setIsMobileMenuOpen(false); }}
-              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right"
+              className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-right flex items-center gap-2"
             >
-              {language === 'fa' ? 'مستندات API' : 'API Docs'}
+              <Code2 className="w-4 h-4 text-slate-600" />
+              <span>{language === 'fa' ? 'مستندات API' : 'API Docs'}</span>
             </button>
             <button
               onClick={() => { setActiveView('gateway-settings'); setIsMobileMenuOpen(false); }}
-              className="col-span-2 p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-center"
+              className="col-span-2 p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 hover:bg-emerald-50 hover:text-emerald-700 text-center flex items-center justify-center gap-2"
             >
-              {language === 'fa' ? 'تنظیمات درگاه پرداخت شاپرک' : 'Gateway Config'}
+              <Settings2 className="w-4 h-4 text-slate-600" />
+              <span>{language === 'fa' ? 'تنظیمات درگاه پرداخت شاپرک' : 'Gateway Config'}</span>
             </button>
           </div>
         </div>

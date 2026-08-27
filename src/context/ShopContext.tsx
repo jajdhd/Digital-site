@@ -51,6 +51,11 @@ interface ShopContextType {
   registerUser: (userData: { fullName: string; phone: string; email: string; nationalCode?: string }) => boolean;
   logoutUser: () => void;
   chargeWallet: (amountTomans: number) => void;
+  isAuthModalOpen: boolean;
+  setIsAuthModalOpen: (open: boolean) => void;
+  authModalTab: 'signin' | 'signup';
+  setAuthModalTab: (tab: 'signin' | 'signup') => void;
+  openAuthModal: (tab?: 'signin' | 'signup') => void;
 
   // Filter & Search
   selectedCategory: ProductCategory;
@@ -242,6 +247,15 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Product Comparison
   const [comparisonList, setComparisonList] = useState<Product[]>([]);
   const [isComparisonModalOpen, setIsComparisonModalOpen] = useState(false);
+
+  // Universal Auth Modal (Sign In / Sign Up)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalTab, setAuthModalTab] = useState<'signin' | 'signup'>('signin');
+
+  const openAuthModal = (tab: 'signin' | 'signup' = 'signin') => {
+    setAuthModalTab(tab);
+    setIsAuthModalOpen(true);
+  };
 
   // Shipping & Payment
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>(() => {
@@ -854,6 +868,11 @@ export const ShopProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         registerUser,
         logoutUser,
         chargeWallet,
+        isAuthModalOpen,
+        setIsAuthModalOpen,
+        authModalTab,
+        setAuthModalTab,
+        openAuthModal,
         selectedCategory,
         setSelectedCategory,
         searchQuery,
