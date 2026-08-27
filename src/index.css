@@ -1,12 +1,34 @@
 @import "tailwindcss";
 
 @layer base {
+  html {
+    font-family: 'Vazirmatn', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  
   body {
     font-family: 'Vazirmatn', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    line-height: 1.6;
+  }
+
+  /* Enhance headings typography weight */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Vazirmatn', system-ui, sans-serif;
+    letter-spacing: -0.015em;
+  }
+
+  /* Refined Persian numbers and monospaced digits */
+  .font-mono {
+    font-feature-settings: "tnum";
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Custom scrollbar for horizontal product carousels */
+/* Custom scrollbars */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -15,22 +37,47 @@
   scrollbar-width: none;
 }
 
-/* Digikala Red and subtle accents */
-:root {
-  --digi-red: #ef4056;
-  --digi-red-dark: #e6123d;
-  --digi-purple: #81258d;
-  --digi-fresh-green: #029a4a;
-  --digi-jet-purple: #7928ca;
-  --digi-plus: #9e46a7;
+/* Custom scrollbar for desktop views */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
-/* Digikala special animations */
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.92; transform: scale(1.03); }
+/* Custom subtle animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.animate-pulse-slow {
-  animation: pulse-slow 3s ease-in-out infinite;
+@keyframes pulseSubtle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
 }
+
+.animate-fadeIn {
+  animation: fadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pulse-subtle {
+  animation: pulseSubtle 2s infinite ease-in-out;
+}
+
+@media print {
+  body {
+    background-color: #ffffff !important;
+  }
+  header, footer, .no-print {
+    display: none !important;
+  }
+}
+

@@ -1,6 +1,6 @@
 {
-  "name": "Digikala Online Store",
-  "description": "A comprehensive Digikala-inspired e-commerce platform with Incredible Offers, multi-seller marketplace, Persian RTL/LTR support, smart shopping advisor, DigiPlus benefits, and advanced filters.",
+  "name": "Rostam Shop Iranian Online Marketplace & Payment Gateway",
+  "description": "فروشگاه آنلاین رستم شاپ - مرجع جامع خرید لوازم دیجیتال، گجت‌های هوشمند و تسویه آنی شاپرک و درگاه زرین‌پال v4 با قابلیت‌های پیشرفته مقایسه کالا، خرید اقساطی و پرداخت فاکتور مستقیم.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
